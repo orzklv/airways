@@ -1,2 +1,2 @@
 build:
-  nix build '.#nixosConfigurations.rpi-example.config.system.build.sdImage'
+  nix build --system aarch64-darwin '.#nixosConfigurations.rpi-example.config.system.build.sdImage'
