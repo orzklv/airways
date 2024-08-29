@@ -1,2 +1,2 @@
 build:
-  nix build .#packages.aarch64-linux.sdcard
+  nix build '.#nixosConfigurations.rpi-example.config.system.build.sdImage'
