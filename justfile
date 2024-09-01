@@ -1,2 +1,2 @@
 build:
-  nix build '.#nixosConfigurations.rpi-example.config.system.build.sdImage'
+  nix build '.#nixosConfigurations.SR71.config.system.build.sdImage'

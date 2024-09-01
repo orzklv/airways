@@ -4,7 +4,7 @@
 
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-        pkgs.openssh
+    pkgs.openssh
   ];
 
   services.openssh.enable = true;
