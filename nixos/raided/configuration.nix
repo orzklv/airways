@@ -12,6 +12,8 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
     # outputs.nixosModules.ssh
+    outputs.nixosModules.board-rpi
+    outputs.nixosModules.fan-control
 
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
