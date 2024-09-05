@@ -1,2 +1,2 @@
 build:
-  nix build '.#nixosConfigurations.SR71.config.system.build.sdImage'
+  nix build '.#nixosConfigurations.Raided.config.system.build.sdImage'

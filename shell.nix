@@ -8,14 +8,16 @@
   import nixpkgs { overlays = [ ]; }
 , ...
 }: pkgs.stdenv.mkDerivation {
-  name = "nix";
+  name = "ranix";
 
   nativeBuildInputs = with pkgs; [
     nix
     nil
-    nixd
-    nixpkgs-fmt
     git
+    nixd
+    just
+    nixpkgs-fmt
+    nixpkgs-lint
   ];
 
   NIX_CONFIG = "extra-experimental-features = nix-command flakes";

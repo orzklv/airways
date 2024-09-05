@@ -29,7 +29,6 @@
   outputs =
     { self
     , nixpkgs
-    , nixpkgs-unstable
     , home-manager
     , flake-utils
     , raspberry-pi-nix
@@ -76,14 +75,14 @@
         # NixOS configuration entrypoint
         # Available through 'nixos-rebuild --flake .#your-hostname'
         nixosConfigurations = {
-          SR71 = nixpkgs.lib.nixosSystem {
+          Raided = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs outputs; };
             modules = [
               # > For SD Card image generation <
               raspberry-pi-nix.nixosModules.raspberry-pi
 
               # > Our main nixos configuration file <
-              ./nixos/sr71/configuration.nix
+              ./nixos/raided/configuration.nix
             ];
           };
         };

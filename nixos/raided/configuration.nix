@@ -33,7 +33,7 @@
   # See the docs at: https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
   raspberry-pi-nix.board = "bcm2712";
 
-  networking.hostName = "SR71"; # Define your hostname.
+  networking.hostName = "Raided"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Root user password until we got normal connection
