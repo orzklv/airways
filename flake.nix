@@ -5,118 +5,89 @@
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
 
+    # You can access packages and modules from different nixpkgs revs
+    # at the same time. Here's an working example:
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Also see the 'unstable-packages' overlay at 'overlays/home.nix'.
+
+    # Home manager
+    home-manager = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Flake utils for eachSystem
     flake-utils.url = "github:numtide/flake-utils";
 
     # Raspberry Pi Nix modules for creating images
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
+
+    # TODO: Add any other flake you might need
+    # hardware.url = "github:nixos/nixos-hardware";
   };
 
   outputs =
     { self
     , nixpkgs
+    , nixpkgs-unstable
+    , home-manager
+    , flake-utils
     , raspberry-pi-nix
     , ...
     } @ inputs:
     let
       inherit (self) outputs;
 
-      # Legacy packages are needed for home-manager
-      lib = nixpkgs.lib; # // home-manager.lib
+      afes = flake-utils.lib.eachDefaultSystem
+        (system:
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+          in
+          # Nixpkgs packages for the current system
+          {
+            # Your custom packages
+            # Acessible through 'nix build', 'nix shell', etc
+            packages = import ./pkgs { inherit pkgs; };
 
-      # Supported systems for your flake packages, shell, etc.
-      systems = [
-        # For compilations
-        "aarch64-linux"
-        "x86_64-linux"
+            # Formatter for your nix files, available through 'nix fmt'
+            # Other options beside 'alejandra' include 'nixpkgs-fmt'
+            formatter = pkgs.nixpkgs-fmt;
 
-        # Development only
-        "aarch64-darwin"
-      ];
+            # Development shells
+            devShells.default = import ./shell.nix { inherit pkgs; };
+          }
+        );
 
+      afse = {
+        # Nixpkgs and Home-Manager helpful functions
+        lib = nixpkgs.lib // home-manager.lib;
 
-      # This is a function that generates an attribute by calling a function you
-      # pass to it, with each system as an argument
-      forAllSystems = nixpkgs.lib.genAttrs systems;
+        # Your custom packages and modifications, exported as overlays
+        overlays = import ./overlays { inherit inputs; };
 
-      # Define a development shell for each system
-      devShellFor = system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        in
-        pkgs.mkShell {
-          NIX_CONFIG = "extra-experimental-features = nix-command flakes";
-          buildInputs = with pkgs; [
-            nix
-            nil
-            git
-            nixd
-            just
-            nixpkgs-fmt
-            nixpkgs-lint
-          ];
+        # Reusable nixos modules you might want to export
+        # These are usually stuff you would upstream into nixpkgs
+        nixosModules = import ./modules/nixos;
 
-          # Set environment variables, if needed
-          shellHook = ''
-            # export SOME_VAR=some_value
-            echo "Welcome to Sokhibjon's dotfiles!"
-          '';
-        };
+        # Reusable home-manager modules you might want to export
+        # These are usually stuff you would upstream into home-manager
+        homeManagerModules = import ./modules/home;
 
+        # NixOS configuration entrypoint
+        # Available through 'nixos-rebuild --flake .#your-hostname'
+        nixosConfigurations = {
+          SR71 = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs outputs; };
+            modules = [
+              # > For SD Card image generation <
+              raspberry-pi-nix.nixosModules.raspberry-pi
 
-      general-config = { pkgs, lib, ... }: {
-        # bcm2711 for rpi 3, 3+, 4, zero 2 w
-        # bcm2712 for rpi 5
-        # See the docs at:
-        # https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
-        raspberry-pi-nix.board = "bcm2712";
-        time.timeZone = "Asia/Tashkent";
-        users.users.root.initialPassword = "root";
-        networking = {
-          hostName = "SR71";
-          useDHCP = false;
-          interfaces = {
-            wlan0.useDHCP = true;
-            eth0.useDHCP = true;
-          };
-        };
-        hardware = {
-          bluetooth.enable = true;
-          raspberry-pi = {
-            config = {
-              all = {
-                base-dt-params = {
-                  # enable autoprobing of bluetooth driver
-                  # https://github.com/raspberrypi/linux/blob/c8c99191e1419062ac8b668956d19e788865912a/arch/arm/boot/dts/overlays/README#L222-L224
-                  krnbt = {
-                    enable = true;
-                    value = "on";
-                  };
-                };
-              };
-            };
+              # > Our main nixos configuration file <
+              ./nixos/sr71/configuration.nix
+            ];
           };
         };
       };
-
     in
-    {
-      # Formatter for your nix files, available through 'nix fmt'
-      # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter =
-        forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
-
-      # Development shells
-      devShell = lib.mapAttrs (system: _: devShellFor system) (lib.genAttrs systems { });
-
-      nixosConfigurations = {
-        SR71 = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [ raspberry-pi-nix.nixosModules.raspberry-pi general-config ];
-        };
-      };
-    };
+    afes // afse;
 }
