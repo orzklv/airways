@@ -55,4 +55,4 @@ in
   };
 
   config = lib.mkMerge [ cfg ];
-};
+}
