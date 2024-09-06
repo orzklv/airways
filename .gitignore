@@ -1,1 +1,8 @@
+# Nix derived build output
 result
+
+# Compiled image results
+nixos-sd-image-*
+
+# Zed editor outputs
+nohup.out
