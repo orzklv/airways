@@ -31,22 +31,13 @@
   pkgs.tealdeer
   pkgs.topgrade
 
-  # For Prismlauncher
-  pkgs.jdk17
-
   # Media encode & decode
   pkgs.ffmpeg
   pkgs.libheif
-
-  # Anime
-  pkgs.crunchy-cli
 
   # GPG Signing
   pkgs.gnupg
 
   # Selfmade programs
-  pkgs.force-push
-  pkgs.dev-clean
-  pkgs.org-location
   pkgs.google
 ]
