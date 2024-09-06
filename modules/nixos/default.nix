@@ -6,5 +6,4 @@
   ssh = import ./ssh;
   users = import ./users;
   nixpkgs = import ./nixpkgs;
-  desktop = import ./desktop;
 }

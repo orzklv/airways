@@ -15,9 +15,6 @@
     outputs.nixosModules.ssh
     outputs.nixosModules.nixpkgs
 
-    # Build is failing whilte trying to compile GNOME Web
-    # outputs.nixosModules.desktop.gnome
-
     # Users of raspberrys
     outputs.nixosModules.users.sakhib
 
