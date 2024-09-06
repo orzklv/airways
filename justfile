@@ -10,3 +10,6 @@ build:
 [doc('Build from x86_64-linux NixOS')]
 build-from-x86_64-linux:
   nix build --system x86_64-linux '.#nixosConfigurations.Raided.config.system.build.sdImage'
+
+extract:
+  mv ./result/sd-image/nixos-sd-image-*.img ./result/sd-image/nixos-sd-image-$(date +%Y%m%d).img
