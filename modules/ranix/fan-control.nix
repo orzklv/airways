@@ -31,7 +31,7 @@
     systemd.timers.fan-control-timer = {
       description = "Run control fan script regularly";
       timerConfig = {
-        OnCalendar = "*-*-* *:0/1:00"; # Run every 10 minutes
+        OnCalendar = "*-*-* *:*:0/20"; # Run every 20 seconds
         Persistent = true;
         Unit = "fan-control.service";
       };

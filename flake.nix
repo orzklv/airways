@@ -68,6 +68,10 @@
         # These are usually stuff you would upstream into nixpkgs
         nixosModules = import ./modules/nixos;
 
+        # Reusable raspberry modules you might want to export
+        # These are usually stuff you would upstream to support rpis
+        ranixModules = import ./modules/ranix;
+
         # Reusable home-manager modules you might want to export
         # These are usually stuff you would upstream into home-manager
         homeManagerModules = import ./modules/home;

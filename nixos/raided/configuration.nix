@@ -11,9 +11,17 @@
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
-    # outputs.nixosModules.ssh
-    outputs.nixosModules.board-rpi
-    outputs.nixosModules.fan-control
+    outputs.nixosModules.zsh
+    outputs.nixosModules.ssh
+    outputs.nixosModules.boot
+    outputs.nixosModules.desktop.gnome
+
+    # Users of raspberrys
+    outputs.nixosModules.users.sakhib
+
+    # If you want to use rpi specific modules your own flake exports (from modules/ranix):
+    outputs.ranixModules.board-rpi
+    outputs.ranixModules.fan-control
 
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
@@ -28,12 +36,6 @@
     # Home Manager NixOS Module
     inputs.home-manager.nixosModules.home-manager
   ];
-
-  # Kernel compilation for image + instance
-  # > bcm2711 for rpi 3, 3+, 4, zero 2 w
-  # > bcm2712 for rpi 5
-  # See the docs at: https://www.raspberrypi.com/documentation/computers/linux_kernel.html#native-build-configuration
-  raspberry-pi-nix.board = "bcm2712";
 
   networking.hostName = "Raided"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
