@@ -13,7 +13,6 @@
     # If you want to use modules your own flake exports (from modules/nixos):
     outputs.nixosModules.zsh
     outputs.nixosModules.ssh
-    outputs.nixosModules.boot
     outputs.nixosModules.nixpkgs
     outputs.nixosModules.desktop.gnome
 

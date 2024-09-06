@@ -4,7 +4,6 @@
   # List your module files here
   zsh = import ./zsh;
   ssh = import ./ssh;
-  boot = import ./boot;
   users = import ./users;
   nixpkgs = import ./nixpkgs;
   desktop = import ./desktop;
