@@ -16,6 +16,7 @@
     git
     nixd
     just
+    zstd
     nixpkgs-fmt
     nixpkgs-lint
   ];
