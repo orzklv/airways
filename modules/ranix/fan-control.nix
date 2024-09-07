@@ -11,7 +11,7 @@
       libraspberrypi
     ];
 
-    # service to control the fan
+    # Service to control the fan
     systemd.services.fan-control = {
       description = "Control the fan depending on the temperature";
       script = ''
@@ -27,7 +27,7 @@
       '';
     };
 
-    # cron to trigger the service
+    # Cron to trigger the main service
     systemd.timers.fan-control-timer = {
       description = "Run control fan script regularly";
       timerConfig = {

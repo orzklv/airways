@@ -22,8 +22,8 @@
     # Raspberry Pi Nix modules for creating images
     raspberry-pi-nix.url = "github:nix-community/raspberry-pi-nix";
 
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
+    # Additional hardware flakes for rpi support
+    hardware.url = "github:nixos/nixos-hardware";
   };
 
   outputs =

@@ -2,7 +2,8 @@
 result
 
 # Compiled image results
-nixos-sd-image-*
+nixos-sd-image-*.img
+nixos-sd-image-*.zst
 
 # Zed editor outputs
 nohup.out
